@@ -5,13 +5,13 @@ class BinaryTree {
     private:
         TreeNode *root;
         TreeNode * addRecursive(TreeNode *current, int value);
-        // TreeNode * deleteRecursive(TreeNode *current, int value);
+        TreeNode * deleteRecursive(TreeNode *current, int value);
         void inorderRecursive(TreeNode *current);
         
     public:
         BinaryTree();
         void add(int value);
-        // void deleteValue(int value);
+        void deleteValue(int value);
         void inorder();
 
 };
@@ -38,13 +38,49 @@ void BinaryTree::add(int value) {
     root = addRecursive(root, value);
 }
 
-// TreeNode * deleteRecursive(TreeNode *current, int value) {
-//     return NULL;
-// }
+TreeNode * BinaryTree::deleteRecursive(TreeNode *current, int value) {
+    if (current == NULL){
+        return current;
+    } 
+    
+    if (current->getValue() > value) {
+        current->setLeftChild(deleteRecursive(current->getLeftChild(), value));
+        return current;
+    } else if (current->getValue() < value) {
+        current->setRightChild(deleteRecursive(current->getRightChild(), value));
+        return current;
+    }
 
-// void BinaryTree::deleteValue(int value){
-//     root = deleteRecursive(root, value);
-// }
+    if (current->getLeftChild() == NULL) {
+        TreeNode *temp = current->getRightChild();
+        delete current;
+        return temp;
+    } else if (current->getRightChild() == NULL) {
+        TreeNode *temp = current->getLeftChild();
+        delete current;
+        return temp;
+    } else {
+        TreeNode *succParent = current->getRightChild();
+
+        //Find succesor
+        TreeNode *succ = current->getRightChild();
+        while (succ->getLeftChild() != NULL) {
+            succParent = succ;
+            succ = succ->getLeftChild();
+        }
+
+        //Delete sucsesor
+        succParent->setLeftChild(succ->getRightChild());
+        current->setValue(succ->getValue());
+
+        delete succ;
+        return current;
+    }
+}
+
+void BinaryTree::deleteValue(int value){
+    root = deleteRecursive(root, value);
+}
 
 void BinaryTree::inorderRecursive(TreeNode *current) {
     if (current == NULL) {
@@ -72,7 +108,14 @@ int main(int argc, char *argv[]) {
 
     tree->inorder();
     cout << "\n";
+
+    tree->deleteValue(10);
     
+
+    tree->inorder();
+    cout << "\n";
+
+
     return 0;
 }
 
