@@ -6,7 +6,9 @@
 #include <gtkmm-3.0/gtkmm/window.h>
 #include <gtkmm-3.0/gtkmm/label.h>
 #include <gtkmm-3.0/gtkmm/entry.h>
+#include <gtkmm-3.0/gtkmm/adjustment.h>
 #include <gtkmm.h>
+#include <string>
 
 class GUI : public Gtk::Window {
 public:
@@ -18,13 +20,18 @@ protected:
     // Signal handlers:
     void onListSelected();
     void onTreeSelected();
-    void addToList(Glib::ustring data);
-    void removeFromList(Glib::ustring data);
-    void modifyListEle(Glib::ustring data);
-    void getListEle(Glib::ustring data);
+    void addToList();
+    void removeFromList();
+    void modifyListEle();
+    void getListEle();
     
-    void addToTree(Glib::ustring data);
-    void removeFromTree(Glib::ustring data);
+    void addToTree();
+    void removeFromTree();
+
+    void doActionOf();
+
+    std::string action;
+
 
 
     // Child widgets:
@@ -59,6 +66,10 @@ protected:
     Gtk::Box entryContainer;
     Gtk::Label lblOption;
     Gtk::Entry entryOption;
+    Gtk::Entry entryIndex;
+
+    Gtk::Button doAction;
+
 };
 
 

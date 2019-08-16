@@ -24,7 +24,8 @@ GUI::GUI() :
     buttonsTreeContainer(Gtk::ORIENTATION_HORIZONTAL, 0),
     addB("Agregar"),
     remove("Eiminar"),
-    entryContainer(Gtk::ORIENTATION_HORIZONTAL, 0) {
+    entryContainer(Gtk::ORIENTATION_HORIZONTAL, 0),
+    doAction("Do it!") {
     // This just sets the title of our new window.
     set_title("Estructuras de Datos!");
 
@@ -74,19 +75,15 @@ GUI::GUI() :
     buttonsListContainer.pack_start(getByPos, false, false, 10);
 
     //Connect buttons to function 
-    addStart.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::addToList), "Agregar a Lista"));
-    removeStart.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::removeFromList), "Eliminar de la lista"));
-    modifyByPos.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::modifyListEle), "Modificar elemento por posicion"));
-    getByPos.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::getListEle), "Obtener elemento por posicion"));
+    addStart.signal_clicked().connect(sigc::mem_fun(*this, &GUI::addToList));
+    removeStart.signal_clicked().connect(sigc::mem_fun(*this, &GUI::removeFromList));
+    modifyByPos.signal_clicked().connect(sigc::mem_fun(*this, &GUI::modifyListEle));
+    getByPos.signal_clicked().connect(sigc::mem_fun(*this, &GUI::getListEle));
     
-    addB.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::addToTree), "Agregar al Arbol"));
-    remove.signal_clicked().connect(sigc::bind<Glib::ustring>(
-        sigc::mem_fun(*this, &GUI::removeFromTree), "Eliminar del arbol"));
+    addB.signal_clicked().connect(sigc::mem_fun(*this, &GUI::addToTree));
+    remove.signal_clicked().connect(sigc::mem_fun(*this, &GUI::removeFromTree));
+
+    doAction.signal_clicked().connect(sigc::mem_fun(*this, &GUI::doActionOf));
 
     //Show widgets
     addStart.show();
@@ -108,12 +105,22 @@ GUI::GUI() :
     buttonsTreeContainer.show();
 
     //Container of specific option
-    vContainer.pack_start(entryContainer, false, false, 0);
+    vContainer.pack_start(entryContainer, false, false, 10);
     entryContainer.pack_start(lblOption, false, false, 10);
     entryContainer.pack_start(entryOption, false, false, 10);
+    entryContainer.pack_start(entryIndex, false, false, 10);
     
     lblOption.show();
     entryOption.show();
+
+    //Initial
+    labelOption.show();
+    treeContainer.hide();
+    entryContainer.hide();
+    listContainer.show();
+    vContainer.pack_start(doAction, false, false, 10);
+
+
 }
 
 GUI::~GUI() { }
@@ -121,35 +128,97 @@ GUI::~GUI() { }
 void GUI::onListSelected() {
     labelOption.show();
     treeContainer.hide();
+    entryContainer.hide();
     listContainer.show();
+    doAction.hide();
 }
 
 void GUI::onTreeSelected(){
     labelOption.show();
     listContainer.hide();
+    entryContainer.hide();
     treeContainer.show();
+    doAction.hide();
 }
 
-void addToList(Glib::ustring data) { 
+void GUI::addToList() { 
+    entryContainer.show();
+    entryOption.set_text("");
+    entryOption.set_editable(true);
+    lblOption.set_text("Ingrese el número que desea agregar");
+    entryIndex.hide();
+    doAction.show();
+    GUI::action = "agregarL";
+}
+    
+void GUI::removeFromList() {
+    entryContainer.show();
+    lblOption.set_text("Se ha eliminado el numero ");
+    entryOption.set_text("#");
+    entryOption.set_editable(false);
+    entryIndex.hide();
+    doAction.hide();
+    GUI::action = "eliminarL";
 
 }
     
-void removeFromList(Glib::ustring data) {
+void GUI::modifyListEle() {
+    entryContainer.show();
+    lblOption.set_text("Indique el nuevo numero y la\nposicion a modificar");
+    entryOption.set_text("");
+    entryOption.set_editable(true);
+    entryIndex.show();
+    doAction.show();
+    GUI::action = "modificar";
+
+}
+
+void GUI::getListEle() {
+    entryContainer.show();
+    entryOption.set_text("");
+    entryOption.set_editable(true);
+    lblOption.set_text("Ingrese el indice del numero a buscar");
+    entryIndex.hide();
+    doAction.show();
+    GUI::action = "obtener";
 
 }
     
-void modifyListEle(Glib::ustring data) {
+void GUI::addToTree() {
+    entryContainer.show();
+    entryOption.set_text("");
+    entryOption.set_editable(true);
+    lblOption.set_text("Ingrese el número que desea agregar");
+    entryIndex.hide();
+    doAction.show();
+    GUI::action = "agregarT";
+}
+
+void GUI::removeFromTree() {
+    entryContainer.show();
+    lblOption.set_text("Ingrese el numero a eliminar ");
+    entryOption.set_text("");
+    entryOption.set_editable(false);
+    entryIndex.hide();
+    doAction.show();
+    GUI::action = "eliminarT";
+}
+
+
+void GUI::doActionOf(){
+    if (GUI::action == "agregarL"){
+        std::cout << "Agregando en lista\n";
+    } else if (GUI::action == "eliminarL"){
+        std::cout << "Eliminando en lista\n";
+    } else if (GUI::action == "modificar"){
+        std::cout << "Modificando en lista\n";
+    } else if (GUI::action == "obtener"){
+        std::cout << "Recuperando elemento en lista\n";
+    } else if (GUI::action == "agregarT"){
+        std::cout << "Agregando en arbol\n";
+    } else {
+        std::cout << "Eliminando en arbol\n";
+    } 
 
 }
 
-void getListEle(Glib::ustring data) {
-
-}
-    
-void addToTree(Glib::ustring data) {
-
-}
-
-void removeFromTree(Glib::ustring data) {
-    
-}
