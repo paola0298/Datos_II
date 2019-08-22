@@ -3,8 +3,10 @@
 //
 
 #include "Gui.h"
-#include "client.cpp"
+#include "controller.cpp"
 #include <iostream>
+
+Controller *controller = new Controller();
 
 GUI::GUI() : 
     vContainer(Gtk::ORIENTATION_VERTICAL, 0),
@@ -143,6 +145,7 @@ void GUI::onTreeSelected(){
 
 void GUI::addToList() { 
     entryContainer.show();
+    entryOption.show();
     entryOption.set_text("");
     entryOption.set_editable(true);
     lblOption.set_text("Ingrese el número que desea agregar");
@@ -153,11 +156,11 @@ void GUI::addToList() {
     
 void GUI::removeFromList() {
     entryContainer.show();
-    lblOption.set_text("Se ha eliminado el numero ");
-    entryOption.set_text("#");
+    lblOption.set_text("Eliminar el primer numero de la lista");
+    // entryOption.set_text("#");
     entryOption.set_editable(false);
     entryIndex.hide();
-    doAction.hide();
+    doAction.show();
     GUI::action = "eliminarL";
 
 }
@@ -165,6 +168,7 @@ void GUI::removeFromList() {
 void GUI::modifyListEle() {
     entryContainer.show();
     lblOption.set_text("Indique el nuevo numero y la\nposicion a modificar");
+    entryOption.show();
     entryOption.set_text("");
     entryOption.set_editable(true);
     entryIndex.show();
@@ -175,6 +179,7 @@ void GUI::modifyListEle() {
 
 void GUI::getListEle() {
     entryContainer.show();
+    entryOption.show();
     entryOption.set_text("");
     entryOption.set_editable(true);
     lblOption.set_text("Ingrese el indice del numero a buscar");
@@ -186,6 +191,7 @@ void GUI::getListEle() {
     
 void GUI::addToTree() {
     entryContainer.show();
+    entryOption.show();
     entryOption.set_text("");
     entryOption.set_editable(true);
     lblOption.set_text("Ingrese el número que desea agregar");
@@ -197,8 +203,9 @@ void GUI::addToTree() {
 void GUI::removeFromTree() {
     entryContainer.show();
     lblOption.set_text("Ingrese el numero a eliminar ");
+    entryOption.show();
     entryOption.set_text("");
-    entryOption.set_editable(false);
+    entryOption.set_editable(true);
     entryIndex.hide();
     doAction.show();
     GUI::action = "eliminarT";
@@ -206,19 +213,92 @@ void GUI::removeFromTree() {
 
 
 void GUI::doActionOf(){
+    std::string entry = entryOption.get_text();
+    char *entryChar = &entry[0];
+    int response;
     if (GUI::action == "agregarL"){
-        std::cout << "Agregando en lista\n";
+        std::cout << "Agregando en lista: " << entry << "\n";
+        int value = std::stol(entry);
+    
+        response = controller->addToList(value);
+
+        std::cout << response << "\n";
+        if (response == 1) {
+            lblOption.set_text("Valor agregado correctamente");
+        } else {
+            lblOption.set_text("Valor no agregado");
+        }
+        
     } else if (GUI::action == "eliminarL"){
-        std::cout << "Eliminando en lista\n";
+        std::cout << "Eliminando en lista> \n";
+        int valueDe = controller->removeFromList();
+
+        if (valueDe != -1) {
+            lblOption.set_text("Valor " + std::to_string(valueDe) + " eliminado correctamente");
+        } else {
+            lblOption.set_text("Valor no eliminado");
+        }
+
+
     } else if (GUI::action == "modificar"){
-        std::cout << "Modificando en lista\n";
+        std::string entryI = entryIndex.get_text();
+        char *entryCharI = &entryI[0];
+        std::cout << "Modificando en lista" << entryI << ", nuevo valor:  \n" << entry << "\n";
+        
+        int value = std::stol(entry);
+        int index = std::stol(entryI);
+    
+        response = controller->modifyList(value, index);
+
+        std::cout << response << "\n";
+        if (response == 1) {
+            lblOption.set_text("Valor modificado correctamente");
+        } else {
+            lblOption.set_text("Valor no modificado");
+        }
     } else if (GUI::action == "obtener"){
-        std::cout << "Recuperando elemento en lista\n";
+        std::cout << "Recuperando elemento en lista (indice) "  << entry << "\n";
+        int value = std::stol(entry);
+        response = controller->get(value);
+        std::cout << response << "\n";
+        if (response != -1) {
+        lblOption.set_text("El valor es " + std::to_string(response));
+        } else {
+            lblOption.set_text("Valor no obtenido");
+        }
+
     } else if (GUI::action == "agregarT"){
-        std::cout << "Agregando en arbol\n";
+        std::cout << "Agregando en arbol: "  << entry << "\n";
+
+        int value = std::stol(entry);
+    
+        response = controller->addToTree(value);
+
+        std::cout << response << "\n";
+        if (response == 1) {
+            lblOption.set_text("Valor agregado correctamente");
+        } else {
+            lblOption.set_text("Valor no agregado");
+        }
     } else {
-        std::cout << "Eliminando en arbol\n";
+        std::cout << "Eliminando en arbol: "  << entry << "\n";
+        int value = std::stol(entry);
+    
+        response = controller->removeFromTree(value);
+
+        std::cout << response << "\n";
+        if (response == 1) {
+            lblOption.set_text("Valor eliminado correctamente");
+        } else {
+            lblOption.set_text("Valor no eliminado");
+        }
     } 
+
+    
+    doAction.hide();
+    entryOption.hide();
+    entryIndex.hide();
+
 
 }
 

@@ -96,26 +96,26 @@ void BinaryTree::inorder() {
 
 }
 
-int main(int argc, char *argv[]) {
-    BinaryTree *tree = new BinaryTree();
+// int main(int argc, char *argv[]) {
+//     BinaryTree *tree = new BinaryTree();
 
-    tree->add(5);
-    tree->add(51);
-    tree->add(10);
-    tree->add(5);
-    tree->add(2);
-    tree->add(1);
+//     tree->add(5);
+//     tree->add(51);
+//     tree->add(10);
+//     tree->add(5);
+//     tree->add(2);
+//     tree->add(1);
 
-    tree->inorder();
-    cout << "\n";
+//     tree->inorder();
+//     cout << "\n";
 
-    tree->deleteValue(10);
+//     tree->deleteValue(10);
     
 
-    tree->inorder();
-    cout << "\n";
+//     tree->inorder();
+//     cout << "\n";
 
 
-    return 0;
-}
+//     return 0;
+// }
 

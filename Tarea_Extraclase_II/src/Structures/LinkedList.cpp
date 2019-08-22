@@ -11,7 +11,7 @@ class LinkedList {
         LinkedList();
         int getSize();
         void insertStart(int value);
-        void deleteStart();
+        int deleteStart();
         void modify(int value, int index);
         int getValueAtPos(int index);
         void print();
@@ -36,13 +36,18 @@ void LinkedList::insertStart(int value) {
     size++;
 }
 
-void LinkedList::deleteStart(){
+int LinkedList::deleteStart(){
+
     if (size>0){
+        int value = head->getValue();
         Node *temp = head->getNext();
         delete(head);
         head = temp;
         size--;
+        return value;
     }
+
+    return -1;
 }
 
 void LinkedList::modify(int value, int index){
@@ -86,27 +91,27 @@ void LinkedList::print(){
     cout << "]\n";
 }
 
-int main(int argc, char *argv[]) { 
-    LinkedList *list = new LinkedList();
+// int main(int argc, char *argv[]) { 
+//     LinkedList *list = new LinkedList();
     
-    list->print();
+//     list->print();
 
-    list->insertStart(5);
-    list->insertStart(9);
-    list->insertStart(23);
-    list->insertStart(7);
-    list->insertStart(1);
+//     list->insertStart(5);
+//     list->insertStart(9);
+//     list->insertStart(23);
+//     list->insertStart(7);
+//     list->insertStart(1);
 
-    list->print();
+//     list->print();
 
-    list->deleteStart();
-    list->deleteStart();
+//     list->deleteStart();
+//     list->deleteStart();
 
-    list->print();
+//     list->print();
 
-    list->modify(500, 0);
+//     list->modify(500, 0);
 
-    list->print();
+//     list->print();
 
 
-}
+// }

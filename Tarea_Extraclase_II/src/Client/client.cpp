@@ -3,10 +3,13 @@
 //
 // Client side C/C++ program to demonstrate Socket programming
 #include <cstdio>
+#include <iostream>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include <jansson.h>
+#include <assert.h>
 #define PORT 8080
 
 int sock = 0, valread;
@@ -36,15 +39,48 @@ bool connect() {
     return true;
 }
 
-void sendMessageToServer(char *message) {
-    send(sock , message , strlen(message) , 0);
+void sendMessageToServer(json_t *message) {
+
+    char *bufferJson = nullptr;
+    std::string bufferSend;
+    size_t size_json;
+    
+    //string of json
+    bufferJson = json_dumps(message, JSON_PRESERVE_ORDER);
+    std::cout << bufferJson << ", Json \n";
+    size_json = strlen(bufferJson);
+
+    // //size of json to string of json
+    // bufferSend = std::to_string(static_cast<long long unsigned int>(size_json));
+
+    send(sock , bufferJson, size_json , 0);
     printf("Message sent to server\n");
+
+    for (int i=0; i<size_json; i++) {
+        bufferJson[i] = '\0';
+    }
+
+    free(bufferJson);
+    printf("free\n");
 }
 
-char * receiveMessageFromServer() {
-    valread = read( sock , buffer, 2048);
-    printf("Message receiven from server\n");
-    printf("%s\n",buffer );
-    return buffer;
+json_t * receiveMessageFromServer() {
 
+    printf("Leyendo mensaje");
+    valread = read(sock, buffer, 2048);
+    std::cout << buffer << ", buffer \n";
+    json_t *jsonRead = json_loads(buffer, JSON_PRESERVE_ORDER, NULL);
+    printf("Casting json\n");
+    std::cout << jsonRead << "\n";
+    return jsonRead;
 }
+
+// int main(int argc, char const *argv[]){
+//     connect();
+//     json_t *send = json_object();
+//     json_object_set_new(send, "test", json_string("Hola")); 
+//     sendMessageToServer(send);
+//     std::cout << receiveMessageFromServer();
+// }
+
+
