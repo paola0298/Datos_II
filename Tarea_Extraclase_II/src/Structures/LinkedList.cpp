@@ -15,6 +15,7 @@ class LinkedList {
         void modify(int value, int index);
         int getValueAtPos(int index);
         void print();
+        string getList();
 };
 
 LinkedList::LinkedList(){
@@ -89,6 +90,30 @@ void LinkedList::print(){
     }
 
     cout << "]\n";
+}
+
+string LinkedList::getList(){
+    Node *temp = head;
+    string list;
+    list.append("[");
+    // cout << "[";
+    for (int i=0; i<size; i++) {
+        if (i == size-1){
+            // cout << temp->getValue();
+            list.append(to_string(temp->getValue()));
+        } else {
+            // cout << temp->getValue() << ", ";
+            list.append(to_string(temp->getValue()));
+            list.append(", ");
+        }
+        temp = temp->getNext();
+    }
+
+    // cout << "]\n";
+    list.append("]");
+
+    cout << list.data() << "\n";
+    return list.data();
 }
 
 // int main(int argc, char *argv[]) { 

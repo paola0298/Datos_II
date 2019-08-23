@@ -42,6 +42,7 @@ protected:
     Gtk::RadioButton linkedListButton, binaryTreeButton;
     Gtk::Separator separator;
     Gtk::Label labelOption;
+    Gtk::Label labelElements;
 
 
     //Contenedor de las opciones para la lista enlazada

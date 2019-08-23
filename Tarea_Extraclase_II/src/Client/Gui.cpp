@@ -71,6 +71,7 @@ GUI::GUI() :
     listContainer.set_halign(Gtk::ALIGN_CENTER);
     vContainer.pack_start(listContainer, false, false, 0);
     listContainer.pack_start(buttonsListContainer);
+    listContainer.pack_start(labelElements);
     buttonsListContainer.pack_start(addStart, false, false, 10);
     buttonsListContainer.pack_start(removeStart, false, false, 10);
     buttonsListContainer.pack_start(modifyByPos, false, false, 10);
@@ -114,6 +115,7 @@ GUI::GUI() :
     
     lblOption.show();
     entryOption.show();
+    labelElements.show();
 
     //Initial
     labelOption.show();
@@ -185,7 +187,7 @@ void GUI::getListEle() {
     lblOption.set_text("Ingrese el indice del numero a buscar");
     entryIndex.hide();
     doAction.show();
-    GUI::action = "obtener";
+    GUI::action = "obtenerL";
 
 }
     
@@ -222,12 +224,14 @@ void GUI::doActionOf(){
     
         response = controller->addToList(value);
 
-        std::cout << response << "\n";
+        // std::cout << response << "\n";
         if (response == 1) {
             lblOption.set_text("Valor agregado correctamente");
         } else {
             lblOption.set_text("Valor no agregado");
         }
+
+        labelElements.set_text(controller->listofElements);
         
     } else if (GUI::action == "eliminarL"){
         std::cout << "Eliminando en lista> \n";
@@ -238,6 +242,7 @@ void GUI::doActionOf(){
         } else {
             lblOption.set_text("Valor no eliminado");
         }
+        labelElements.set_text(controller->listofElements);
 
 
     } else if (GUI::action == "modificar"){
@@ -256,7 +261,10 @@ void GUI::doActionOf(){
         } else {
             lblOption.set_text("Valor no modificado");
         }
-    } else if (GUI::action == "obtener"){
+
+        labelElements.set_text(controller->listofElements);
+
+    } else if (GUI::action == "obtenerL"){
         std::cout << "Recuperando elemento en lista (indice) "  << entry << "\n";
         int value = std::stol(entry);
         response = controller->get(value);
@@ -266,6 +274,8 @@ void GUI::doActionOf(){
         } else {
             lblOption.set_text("Valor no obtenido");
         }
+
+        labelElements.set_text(controller->listofElements);
 
     } else if (GUI::action == "agregarT"){
         std::cout << "Agregando en arbol: "  << entry << "\n";

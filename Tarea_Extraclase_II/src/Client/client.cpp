@@ -61,16 +61,19 @@ void sendMessageToServer(json_t *message) {
     }
 
     free(bufferJson);
-    printf("free\n");
+    // printf("free\n");
 }
 
 json_t * receiveMessageFromServer() {
 
-    printf("Leyendo mensaje");
+    // buffer[2048] = {0};
+    // std::cout << buffer << ", buffer before read\n";
+
+    // printf("Leyendo mensaje");
     valread = read(sock, buffer, 2048);
     std::cout << buffer << ", buffer \n";
     json_t *jsonRead = json_loads(buffer, JSON_PRESERVE_ORDER, NULL);
-    printf("Casting json\n");
+    // printf("Casting json\n");
     std::cout << jsonRead << "\n";
     return jsonRead;
 }

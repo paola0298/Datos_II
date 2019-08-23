@@ -15,6 +15,7 @@ class Controller {
         int addToTree(int value);
         int removeFromTree(int value);
         // void getTree();
+        const char * listofElements;
 };
 
 
@@ -30,15 +31,19 @@ int Controller::addToList(int value) {
 
     sendMessageToServer(action);
 
-    printf("Esperando");
+    // printf("Esperando");
     json_t *response = receiveMessageFromServer();
-    printf("Listo");
+    // printf("Listo");
     json_t *statusJson = json_object_get(response, "Status");
+    json_t *elementsJson = json_object_get(response, "list");
+    const char* elements = json_string_value(elementsJson);
+    std::cout<<"Elements " << elements << "\n";
+    Controller::listofElements = elements;
 
     const char* status = json_string_value(statusJson);
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        std::cout << "Status " << status << "\n";
+        // std::cout << "Status " << status << "\n";
         return 1;
     } else {
         return 0;
@@ -57,12 +62,16 @@ int Controller::removeFromList(){
     json_t *response = receiveMessageFromServer();
     json_t *statusJson = json_object_get(response, "Status");
     json_t *deletedJson = json_object_get(response, "deleted");
+    json_t *elementsJson = json_object_get(response, "list");
+    const char* elements = json_string_value(elementsJson);
+    std::cout<<"Elements " << elements << "\n";
+    Controller::listofElements = elements;
 
     const char* status = json_string_value(statusJson);
     int valueDeleted = json_integer_value(deletedJson);
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        std::cout << "Status " << status << "\n";
+        // std::cout << "Status " << status << "\n";
         return valueDeleted;
     } else {
         return -1;
@@ -81,11 +90,15 @@ int Controller::modifyList(int value, int index) {
 
     json_t *response = receiveMessageFromServer();
     json_t *statusJson = json_object_get(response, "Status");
+    json_t *elementsJson = json_object_get(response, "list");
+    const char* elements = json_string_value(elementsJson);
+    std::cout<<"Elements " << elements << "\n";
+    Controller::listofElements = elements;
 
     const char* status = json_string_value(statusJson);
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        std::cout << "Status " << status << "\n";
+        // std::cout << "Status " << status << "\n";
         return 1;
     } else {
         return 0;
@@ -96,7 +109,7 @@ int Controller::get(int index) {
     connect();
     json_t *action = json_object();
 
-    json_object_set_new(action, "action", json_string("obtener"));
+    json_object_set_new(action, "action", json_string("obtenerL"));
     json_object_set_new(action, "value", json_integer(index));
 
     sendMessageToServer(action);
@@ -104,13 +117,16 @@ int Controller::get(int index) {
     json_t *response = receiveMessageFromServer();
     json_t *statusJson = json_object_get(response, "Status");
     json_t *valueG = json_object_get(response, "get");
+    json_t *elementsJson = json_object_get(response, "list");
+    const char* elements = json_string_value(elementsJson);
+    std::cout<<"Elements " << elements << "\n";
 
     const char* status = json_string_value(statusJson);
     int valueGetted = json_integer_value(valueG);
+    Controller::listofElements = elements;
 
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        // std::cout << "Status " << status << "\n";
         return valueGetted;
     } else {
         return -1;
@@ -133,7 +149,7 @@ int Controller::addToTree(int value) {
     const char* status = json_string_value(statusJson);
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        std::cout << "Status " << status << "\n";
+        // std::cout << "Status " << status << "\n";
         return 1;
     } else {
         return 0;
@@ -156,7 +172,7 @@ int Controller::removeFromTree(int value) {
     const char* status = json_string_value(statusJson);
     std::cout << "Status " << status << "\n";
     if (strcmp(status,"Success") == 0) {
-        std::cout << "Status " << status << "\n";
+        // std::cout << "Status " << status << "\n";
         return 1;
     } else {
         return 0;

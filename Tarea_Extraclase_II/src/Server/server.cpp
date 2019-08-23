@@ -88,11 +88,13 @@ bool connect() {
 }
 
 json_t * receiveMessageFromClient() {
-    printf("Reading..\n");
+    buffer[2048] = {0};
+    // std::cout << buffer << ", buffer before read\n";
+    // printf("Reading..\n");
     valread = read(new_socket, buffer, 2048);
-    std::cout << buffer << ", buffer \n";
+    // std::cout << buffer << ", buffer \n";
     json_t *jsonRead = json_loads(buffer, JSON_PRESERVE_ORDER, NULL);
-    printf("Casting json\n");
+    // printf("Casting json\n");
     std::cout << jsonRead << "\n";
     return jsonRead;
 
@@ -134,10 +136,11 @@ void connectionListener() {
             json_t *valueJson = json_object_get(message, "value");
 
             const char* action = json_string_value(actionJson);
+            char* elements = nullptr;
             int value = json_integer_value(valueJson);
 
-            std::cout <<"action " << action << "\n";
-            std::cout <<"value " << value << "\n";
+            // std::cout <<"action " << action << "\n";
+            // std::cout <<"value " << value << "\n";
 
             if (strcmp(action, "agregarL") == 0){
                 std::cout << "Adding to list\n";
@@ -145,6 +148,10 @@ void connectionListener() {
                 list->print();
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
+                cout << "copy\n";
+                elements = &list->getList()[0];
+                cout << "copy..." << elements << "\n";
+                json_object_set_new(response, "list", json_string(elements));
                 sendMessageToClient(response);
                 std::cout << "Response sent\n";
             } else if (strcmp(action, "eliminarL") == 0) {
@@ -153,6 +160,8 @@ void connectionListener() {
                 list->print();
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
+                elements = &list->getList()[0];
+                json_object_set_new(response, "list", json_string(elements));
                 json_object_set_new(response, "deleted", json_integer(deleted));
                 sendMessageToClient(response);
                 std::cout << "Response sent\n";
@@ -166,27 +175,33 @@ void connectionListener() {
                 list->print();
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
+                elements = &list->getList()[0];
+                json_object_set_new(response, "list", json_string(elements));
                 sendMessageToClient(response);
                 std::cout << "Response sent\n";
 
-            } else if (strcmp(action, "obtener") == 0) {
+            } else if (strcmp(action, "obtenerL") == 0) {
                 std::cout << "Getting from list\n";
                 int valueGetted = list->getValueAtPos(value);
                 list->print();
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
                 json_object_set_new(response, "get", json_integer(valueGetted));
+                elements = &list->getList()[0];
+                json_object_set_new(response, "list", json_string(elements));
                 sendMessageToClient(response);
                 std::cout << "Response sent\n";
 
             } else if (strcmp(action, "agregarT") == 0) {
                 std::cout << "Adding to Tree\n";
                 tree->add(value);
+                std::cout << "Tree: ";
                 tree->inorder();
+               
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
                 sendMessageToClient(response);
-                std::cout << "Response sent\n";
+                std::cout << "\nResponse sent\n";
             } else {
                 std::cout << "Removing from Tree\n";
                 tree->deleteValue(value);
@@ -194,7 +209,7 @@ void connectionListener() {
                 json_t *response = json_object();
                 json_object_set_new(response, "Status", json_string("Success"));
                 sendMessageToClient(response);
-                std::cout << "Response sent\n";
+                std::cout << "\nResponse sent\n";
             }
             // std::cout<<"closing connection \n";
             // close(server_fd);
@@ -207,26 +222,27 @@ void connectionListener() {
 }
 
 
+
 int main(int argc, char const *argv[]) {
 
-    tree->add(5);
-    tree->add(51);
-    tree->add(10);
-    tree->add(5);
-    tree->add(2);
-    tree->add(1);
+    // tree->add(5);
+    // tree->add(51);
+    // tree->add(10);
+    // tree->add(5);
+    // tree->add(2);
+    // tree->add(1);
 
-    tree->inorder();
+    // tree->inorder();
 
-    std::cout <<"\n";
+    // std::cout <<"\n";
 
-    list->insertStart(5);
-    list->insertStart(9);
-    list->insertStart(23);
-    list->insertStart(7);
-    list->insertStart(1);
+    // list->insertStart(5);
+    // list->insertStart(9);
+    // list->insertStart(23);
+    // list->insertStart(7);
+    // list->insertStart(1);
 
-    list->print();
+    // list->print();
 
     
 

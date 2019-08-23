@@ -7,12 +7,14 @@ class BinaryTree {
         TreeNode * addRecursive(TreeNode *current, int value);
         TreeNode * deleteRecursive(TreeNode *current, int value);
         void inorderRecursive(TreeNode *current);
+    
         
     public:
         BinaryTree();
         void add(int value);
         void deleteValue(int value);
         void inorder();
+        
 
 };
 
@@ -95,6 +97,10 @@ void BinaryTree::inorder() {
     inorderRecursive(root);
 
 }
+
+
+
+
 
 // int main(int argc, char *argv[]) {
 //     BinaryTree *tree = new BinaryTree();
