@@ -4,3 +4,6 @@
 [submodule "Tareas/Actividad_1_portafolio/Data_Structures"]
 	path = Tareas/Actividad_1_portafolio/Data_Structures
 	url = https://github.com/Marlon-vc/Data_Structures.git
+[submodule "Tareas/Tarea_Algoritmos_Geneticos/PoC_Algoritmos_Geneticos"]
+	path = Tareas/Tarea_Algoritmos_Geneticos/PoC_Algoritmos_Geneticos
+	url = https://github.com/Marlon-vc/PoC_Algoritmos_Geneticos.git
