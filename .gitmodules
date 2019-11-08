@@ -7,3 +7,6 @@
 [submodule "Tareas/Tarea_Algoritmos_Geneticos/PoC_Algoritmos_Geneticos"]
 	path = Tareas/Tarea_Algoritmos_Geneticos/PoC_Algoritmos_Geneticos
 	url = https://github.com/Marlon-vc/PoC_Algoritmos_Geneticos.git
+[submodule "Tareas/TareaExtraclase3"]
+	path = Tareas/TareaExtraclase3
+	url = https://github.com/Marlon-vc/TareaExtraclase3.git
