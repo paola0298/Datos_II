@@ -1,3 +1,6 @@
 [submodule "TareaExtraclase3"]
 	path = TareaExtraclase3
 	url = https://github.com/Marlon-vc/TareaExtraclase3.git
+[submodule "Tareas/Actividad_1_portafolio/Data_Structures"]
+	path = Tareas/Actividad_1_portafolio/Data_Structures
+	url = https://github.com/Marlon-vc/Data_Structures.git
